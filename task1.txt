@@ -1,0 +1,132 @@
+SQL> -- 1. CONNECTION AND SETUP
+SQL> -- Connecting as system administrator
+SQL> CONNECT system;
+Enter password:
+Connected.
+SQL> -- 2. CREATE TABLES
+SQL> -- Creating the Departments Table
+SQL> CREATE TABLE Departments (
+  2      DeptID INT PRIMARY KEY,
+  3      DeptName VARCHAR2(50)
+  4  );
+
+Table created.
+
+SQL> -- Creating the Employees Table
+SQL> CREATE TABLE Employees (
+  2      EmpID INT PRIMARY KEY,
+  3      Name VARCHAR2(50),
+  4      DeptID INT
+  5  );
+
+Table created.
+
+SQL> -- 3. INSERT DATA
+SQL> INSERT INTO Departments VALUES (10, 'Engineering');
+
+1 row created.
+
+SQL> INSERT INTO Departments VALUES (20, 'Sales');
+
+1 row created.
+
+SQL> INSERT INTO Departments VALUES (30, 'Marketing');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO Employees VALUES (1, 'Alice', 10);
+
+1 row created.
+
+SQL> INSERT INTO Employees VALUES (2, 'Bob', 20);
+
+1 row created.
+
+SQL> INSERT INTO Employees VALUES (3, 'Charlie', NULL);
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> -- 4. EXECUTION OF JOINS
+SQL> -- INNER JOIN: Only matching records [cite: 20]
+SQL> SELECT 'INNER JOIN' as Type, E.Name, D.DeptName
+  2  FROM Employees E
+  3  INNER JOIN Departments D ON E.DeptID = D.DeptID;
+
+TYPE       NAME
+---------- --------------------------------------------------
+DEPTNAME
+--------------------------------------------------
+INNER JOIN Alice
+Engineering
+
+INNER JOIN Bob
+Sales
+
+
+SQL> -- LEFT JOIN: All employees, even without departments [cite: 20]
+SQL> SELECT 'LEFT JOIN' as Type, E.Name, D.DeptName
+  2  FROM Employees E
+  3  LEFT JOIN Departments D ON E.DeptID = D.DeptID;
+
+TYPE      NAME
+--------- --------------------------------------------------
+DEPTNAME
+--------------------------------------------------
+LEFT JOIN Alice
+Engineering
+
+LEFT JOIN Bob
+Sales
+
+LEFT JOIN Charlie
+
+
+
+SQL> -- RIGHT JOIN: All departments, even without employees [cite: 20]
+SQL> SELECT 'RIGHT JOIN' as Type, E.Name, D.DeptName
+  2  FROM Employees E
+  3  RIGHT JOIN Departments D ON E.DeptID = D.DeptID;
+
+TYPE       NAME
+---------- --------------------------------------------------
+DEPTNAME
+--------------------------------------------------
+RIGHT JOIN Alice
+Engineering
+
+RIGHT JOIN Bob
+Sales
+
+RIGHT JOIN
+Marketing
+
+
+SQL> -- FULL JOIN: Everything from both tables [cite: 20]
+SQL> SELECT 'FULL JOIN' as Type, E.Name, D.DeptName
+  2  FROM Employees E
+  3  FULL OUTER JOIN Departments D ON E.DeptID = D.DeptID;
+
+TYPE      NAME
+--------- --------------------------------------------------
+DEPTNAME
+--------------------------------------------------
+FULL JOIN Alice
+Engineering
+
+FULL JOIN Bob
+Sales
+
+FULL JOIN
+Marketing
+
+
+TYPE      NAME
+--------- --------------------------------------------------
+DEPTNAME
+--------------------------------------------------
+FULL JOIN Charlie
