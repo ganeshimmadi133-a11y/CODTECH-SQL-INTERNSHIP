@@ -1,0 +1,41 @@
+SQL> -- TASK 04: BACKUP AND RECOVERY
+SQL>
+SQL> -- CONNECTION AND SETUP
+SQL> -- Connecting as system administrator
+SQL> CONNECT system;
+Enter password:
+Connected.
+SQL> -- 1. Create Data
+SQL> CREATE TABLE backup_demo (id INT, info VARCHAR2(50));
+
+Table created.
+
+SQL> INSERT INTO backup_demo VALUES (1, 'Critical Internship Data');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> -- 2. Backup (Save Action)
+SQL> CREATE TABLE backup_demo_final AS SELECT * FROM backup_demo;
+
+Table created.
+
+SQL> -- 3. Failure (Delete Action)
+SQL> DROP TABLE backup_demo;
+
+Table dropped.
+
+SQL> -- 4. Recovery (Restore Action)
+SQL> CREATE TABLE backup_demo AS SELECT * FROM backup_demo_final;
+
+Table created.
+
+SQL> -- 5. Verification
+SQL> SELECT * FROM backup_demo;
+
+        ID INFO
+---------- --------------------------------------------------
+         1 Critical Internship Data

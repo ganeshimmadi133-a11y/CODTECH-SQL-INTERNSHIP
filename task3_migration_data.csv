@@ -1,0 +1,4 @@
+SQL> SELECT * FROM migration_source;
+       101,Sanay Reddy                                       ,     75000
+       102,Rahul Sharma                                      ,     68000
+SQL> SPOOL OFF

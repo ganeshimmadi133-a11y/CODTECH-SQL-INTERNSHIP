@@ -1,0 +1,43 @@
+SQL> -- TASK 03: DATABASE MIGRATION
+SQL>
+SQL> -- CONNECTION AND SETUP
+SQL> -- Connecting as system administrator
+SQL> CONNECT system;
+Enter password:
+Connected.
+SQL> -- 1. Setup Migration Table
+SQL> CREATE TABLE migration_source (
+  2      emp_id INT PRIMARY KEY,
+  3      emp_name VARCHAR2(50),
+  4      salary NUMBER
+  5  );
+
+Table created.
+
+SQL> INSERT INTO migration_source VALUES (101, 'Sanay Reddy', 75000);
+
+1 row created.
+
+SQL> INSERT INTO migration_source VALUES (102, 'Rahul Sharma', 68000);
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL>
+SQL> -- 2. Export to CSV (The Migration Step)
+SQL> SET COLSEP ','
+SQL> SET PAGESIZE 0
+SQL> SET FEEDBACK OFF
+SQL> SET TRIMSPOOL ON
+SQL>
+SQL> SPOOL C:\Users\Public\task3_migration_data.csv
+SQL> SELECT * FROM migration_source;
+       101,Sanay Reddy                                       ,     75000
+       102,Rahul Sharma                                      ,     68000
+SQL> SPOOL OFF
+SQL> -- 3. Integrity Verification
+SQL> SELECT COUNT(*) AS total_records_migrated FROM migration_source;
+                     2

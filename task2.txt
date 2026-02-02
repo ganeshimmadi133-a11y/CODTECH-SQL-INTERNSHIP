@@ -1,0 +1,68 @@
+
+SQL> -- TASK 02: ADVANCED DATA ANALYSIS
+SQL>
+SQL> -- CONNECTION AND SETUP
+SQL> -- Connecting as system administrator
+SQL> CONNECT system;
+Enter password:
+Connected.
+SQL> -- 1. Setup Table
+SQL> CREATE TABLE Sales (
+  2      sale_id INT PRIMARY KEY,
+  3      emp_id INT,
+  4      amount INT,
+  5      sale_date DATE
+  6  );
+
+Table created.
+
+SQL> INSERT INTO Sales VALUES (1, 1, 5000, TO_DATE('2024-01-01', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO Sales VALUES (2, 1, 7000, TO_DATE('2024-01-05', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO Sales VALUES (3, 2, 6000, TO_DATE('2024-01-03', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> INSERT INTO Sales VALUES (4, 2, 9000, TO_DATE('2024-01-10', 'YYYY-MM-DD'));
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> -- 2. Window Function (Ranking)
+SQL> SELECT emp_id, amount, RANK() OVER (PARTITION BY emp_id ORDER BY amount DESC) AS sale_rank FROM Sales;
+
+    EMP_ID     AMOUNT  SALE_RANK
+---------- ---------- ----------
+         1       7000          1
+         1       5000          2
+         2       9000          1
+         2       6000          2
+
+SQL> -- 3. Subquery (Filtering by Average)
+SQL> SELECT emp_id, amount FROM Sales WHERE amount > (SELECT AVG(amount) FROM Sales);
+
+    EMP_ID     AMOUNT
+---------- ----------
+         1       7000
+         2       9000
+
+SQL> -- 4. CTE (Total Sales per Employee)
+SQL> WITH TotalSales AS (
+  2      SELECT emp_id, SUM(amount) AS total_amount
+  3      FROM Sales
+  4      GROUP BY emp_id
+  5  )
+  6  SELECT * FROM TotalSales;
+
+    EMP_ID TOTAL_AMOUNT
+---------- ------------
+         1        12000
+         2        15000
